@@ -59,15 +59,17 @@ class DataPasienController extends Controller
         // $auto=intval($auto)+1;
         // $auto_number=substr($no,0,2).str_repeat(0,(1-strlen($auto))).$auto;
 
-            $selectNORM = DataPasien::select('no_rekam')->latest('tgl')->get()->first()->get();
+            $selectNORM = DataPasien::select('no_rekam')->latest()->get()->first()->get();
             // dd($selectNORM);
             if($selectNORM){
                 $i = substr($selectNORM[0]->no_rekam,-2);
-                $createNORM = '20' . date('dmy'). $i + (1);                
-            }else{
-                $createNORM = '20' . date('dmy'). '01';
+                // $i = intval($i);
+                $createNORM = ('20' . date('dmy'). $i) + 1;                
             }
-            // dd($createNORM+1);
+            else{
+                $createNORM = '20' . date(). '01';
+            }
+            // dd($createNORM);
 
         return view('admin.data_pasien.create', [
             'title' => 'Tambah Data Pasien',
