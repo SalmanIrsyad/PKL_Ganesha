@@ -48,7 +48,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-white-primary elevation-4" >
+  <aside class="main-sidebar sidebar-dark-primary elevation-4" >
     <!-- Sidebar -->
     @include('layouts.components.sidebar')
     <!-- /.sidebar -->

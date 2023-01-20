@@ -22,7 +22,7 @@
 </a> --}} 
 <a href="/home" class="brand-link active">
   <img src="{{asset('images')}}/piksi ganesha hospital.png" alt="Piksi Ganesha Logo" class="brand-image" style="opacity: .8">
-  <span class="brand-text font-weight-primary"><b>Piksi</b><small>Hospital</small></span>
+  <span class="brand-text font-weight-primary"><b>Piksi</b><small>hospital</small></span>
 </a>
 <div class="sidebar">
     <!-- Sidebar user panel (optional) -->

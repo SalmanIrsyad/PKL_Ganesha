@@ -47,7 +47,7 @@
                             </div>
                         </div> 
                         <div class="mb-3">
-                            <div class="d-grid gap-2">
+                            <div class="d-grid gap-2 d-md-block">
                                 {{-- <a href="{{ route('pesan.show')}}" class="btn btn-primary" type="submit">Pesan Tiket</a> --}}
                                 <a href="/tiket-edit/{{auth()->user()->id}}" class="btn btn-primary" type="submit">Edit</a>
                                 <a href="/home" class="btn btn-primary" type="submit">Kembali</a>

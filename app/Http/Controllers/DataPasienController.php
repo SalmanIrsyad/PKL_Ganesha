@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\DataPasien;
 use App\Exports\DataPasienExport;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Models\DataPasien;
 use Auth;
-//  
-
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
+//
 
 class DataPasienController extends Controller
 {
@@ -22,27 +22,24 @@ class DataPasienController extends Controller
     {
         $this->middleware('auth');
     }
-    
-     
+
     public function index()
     {
         $this->authorize('admin');
         // $data_pasien = $data_pasien->where('id_user',Auth()->user()->id);
         // dd($data_pasien);
         $data_pasien = DataPasien::all();
-        return view ('admin.data_pasien.index',compact('data_pasien'), [
+        return view('admin.data_pasien.index', compact('data_pasien'), [
             'title' => 'Data Pasien',
-            
+
         ]);
-        
+
     }
 
-
-    public function dataExport(){
-        return Excel::download(new DataPasienExport,'DataPasien.xlsx');
+    public function dataExport()
+    {
+        return Excel::download(new DataPasienExport, 'DataPasien.xlsx');
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -51,29 +48,32 @@ class DataPasienController extends Controller
      */
     public function create()
     {
-        // $table_no = '01'; // nantinya menggunakan database dan table sungguhan
-        // $tgl = substr(str_replace( '-', '', Carbon\carbon::now()), 0,2);
+        // $createNORM = '$20' . date('dmy') . '%';
+        // $selectNORM = DataPasien::where('no_rekam' , 'LIKE' , '%' . $createNORM. '%')->first();
+        // if($selectNORM == null){
+        //     $selectNORM = DataPasien::select('no_rekam')->latest('tgl')->get();
+        //     $createNORM = '20' . date('dmy') . substr($selectNORM[0]->no_rekam,-2) + 1;
+        // }else{
+        //     $createNORM = '20' . date('dmy'). '01';
+        // }
+
+        // $selectNORM = DataPasien::select('no_rekam')->latest()->get();
+        // dd($selectNORM);
+        // dd($selectNORM);
         
-        // $no= $tgl.$table_no;
-        // $auto=substr($no,2);
-        // $auto=intval($auto)+1;
-        // $auto_number=substr($no,0,2).str_repeat(0,(1-strlen($auto))).$auto;
-
-            $selectNORM = DataPasien::select('no_rekam')->latest()->get()->first()->get();
-            // dd($selectNORM);
-            if($selectNORM){
-                $i = substr($selectNORM[0]->no_rekam,-2);
-                // $i = intval($i);
-                $createNORM = ('20' . date('dmy'). $i) + 1;                
-            }
-            else{
-                $createNORM = '20' . date(). '01';
-            }
-            // dd($createNORM);
-
+        // dd($createNORM);
+        // $createNORM = 'data_pasiens';
+        $data = DataPasien::count();
+        if ($data <= 0) {
+            $createNORM = '20'. Carbon::now()->format('dmy').str_pad(DataPasien::count() + 1, 3, '0', STR_PAD_LEFT);
+            
+        } else {
+            $createNORM = '20'. Carbon::now()->format('dmy').str_pad(DataPasien::count() + 1, 3, '0', STR_PAD_LEFT);
+        }
+        // dd($createNORM);
         return view('admin.data_pasien.create', [
             'title' => 'Tambah Data Pasien',
-            'no_rm' => $createNORM ,
+            'no_rm' => $createNORM,
         ]);
 
     }
@@ -105,20 +105,20 @@ class DataPasienController extends Controller
             'agama' => 'required',
             'status' => 'required',
             'jenis_kelamin' => 'required',
-           
+
             'nama_ayah' => 'required',
             'alamat_ayah' => 'required',
             'tgl_lahir_ayah' => 'required',
             'pekerjaan_ayah' => 'required',
             'penghasilan_ayah' => 'required',
-            'pendidikan_ayah' => 'required', 
+            'pendidikan_ayah' => 'required',
 
             'nama_ibu' => 'required',
             'alamat_ibu' => 'required',
             'tgl_lahir_ibu' => 'required',
             'pekerjaan_ibu' => 'required',
             'penghasilan_ibu' => 'required',
-            'pendidikan_ibu' => 'required', 
+            'pendidikan_ibu' => 'required',
 
         ]);
 
@@ -136,7 +136,7 @@ class DataPasienController extends Controller
         $data_pasien->alergi = $request->alergi;
         $data_pasien->keterangan_alergi = $request->keterangan_alergi;
         $data_pasien->no_tlp = $request->no_tlp;
-        $data_pasien->alamat = $request->alamat ;
+        $data_pasien->alamat = $request->alamat;
         $data_pasien->kec = $request->kec;
         $data_pasien->kota = $request->kota;
         $data_pasien->pekerjaan = $request->pekerjaan;
@@ -158,7 +158,7 @@ class DataPasienController extends Controller
         $data_pasien->pendidikan_ibu = $request->pendidikan_ibu;
         $data_pasien->tgl_lahir_ibu = $request->tgl_lahir_ibu;
         $data_pasien->save();
-        return redirect()->route('tiket.create')->with('succes','Data berhasil dibuat!');
+        return redirect()->route('tiket.create')->with('succes', 'Data berhasil dibuat!');
     }
 
     /**
@@ -171,7 +171,7 @@ class DataPasienController extends Controller
     {
         //
         $data_pasien = DataPasien::FindOrFail($id);
-        return view('admin.data_pasien.show',compact('data_pasien'),[
+        return view('admin.data_pasien.show', compact('data_pasien'), [
             'title' => 'Lihat Data Pasien',
         ]);
     }
@@ -186,7 +186,7 @@ class DataPasienController extends Controller
     {
         //
         $data_pasien = DataPasien::FindOrFail($id);
-        return view('admin.data_pasien.edit',compact('data_pasien'), [
+        return view('admin.data_pasien.edit', compact('data_pasien'), [
             'title' => 'Ubah Data Pasien',
         ]);
     }
@@ -220,20 +220,20 @@ class DataPasienController extends Controller
             'agama' => 'required',
             'status' => 'required',
             'jenis_kelamin' => 'required',
-            
+
             'nama_ayah' => 'required',
             'alamat_ayah' => 'required',
             'tgl_lahir_ayah' => 'required',
             'pekerjaan_ayah' => 'required',
             'penghasilan_ayah' => 'required',
-            'pendidikan_ayah' => 'required', 
+            'pendidikan_ayah' => 'required',
 
             'nama_ibu' => 'required',
             'alamat_ibu' => 'required',
             'tgl_lahir_ibu' => 'required',
             'pekerjaan_ibu' => 'required',
             'penghasilan_ibu' => 'required',
-            'pendidikan_ibu' => 'required', 
+            'pendidikan_ibu' => 'required',
         ]);
 
         $data_pasien = DataPasien::FindOrFail($id);
@@ -249,14 +249,14 @@ class DataPasienController extends Controller
         $data_pasien->alergi = $request->alergi;
         $data_pasien->keterangan_alergi = $request->keterangan_alergi;
         $data_pasien->no_tlp = $request->no_tlp;
-        $data_pasien->alamat = $request->alamat ;
+        $data_pasien->alamat = $request->alamat;
         $data_pasien->kec = $request->kec;
         $data_pasien->kota = $request->kota;
         $data_pasien->pekerjaan = $request->pekerjaan;
         $data_pasien->agama = $request->agama;
         $data_pasien->status = $request->status;
         $data_pasien->jenis_kelamin = $request->jenis_kelamin;
-        
+
         $data_pasien->nama_ayah = $request->nama_ayah;
         $data_pasien->alamat_ayah = $request->alamat_ayah;
         $data_pasien->pekerjaan_ayah = $request->pekerjaan_ayah;
@@ -271,7 +271,7 @@ class DataPasienController extends Controller
         $data_pasien->pendidikan_ibu = $request->pendidikan_ibu;
         $data_pasien->tgl_lahir_ibu = $request->tgl_lahir_ibu;
         $data_pasien->save();
-        return redirect()->route('admin.data_pasien.index')->with('succes','Data berhasil dibuat!');
+        return redirect()->route('admin.data_pasien.index')->with('succes', 'Data berhasil dibuat!');
     }
 
     /**
@@ -285,14 +285,14 @@ class DataPasienController extends Controller
         //
         $data_pasien = DataPasien::FindOrFail($id);
         $data_pasien->delete();
-        return redirect()->route('data_pasien.index')->with('succes','Data berhasil dihapus!');
+        return redirect()->route('data_pasien.index')->with('succes', 'Data berhasil dihapus!');
     }
 
     //User
-        public function show_($id)
+    public function show_($id)
     {
         $data_pasien = DataPasien::FindOrFail($id);
-        $Cari_data = $data_pasien->where('id_user',Auth()->user()->id)->get();
+        $Cari_data = $data_pasien->where('id_user', Auth()->user()->id)->get();
         return view('user/data_pasien/show', [
             'title' => 'Lihat Data Pasien',
             'data_pasien' => $Cari_data[0],
@@ -308,7 +308,7 @@ class DataPasienController extends Controller
     public function edit_($id)
     {
         $data_pasien = DataPasien::FindOrFail($id);
-        $Cari_data = $data_pasien->where('id_user',Auth()->user()->id)->get();
+        $Cari_data = $data_pasien->where('id_user', Auth()->user()->id)->get();
         return view('user/data_pasien/edit', [
             'title' => 'Ubah Data Pasien',
             'data_pasien' => $Cari_data[0],

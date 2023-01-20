@@ -22,8 +22,7 @@
                                     <div class="col-sm">
                                         <div class="mb-3">
                                             <label class="form-label">No Rekam Medis</label>
-                                            <input type="number" class="form-control  @error('no_rekam') is-invalid @enderror"
-                                                name="no_rekam" value="{{ $data_pasien->no_rekam }}">
+                                            <input type="number" disabled class="form-control  @error('no_rekam') is-invalid @enderror" name="no_rekam" value="{{ $no_rm }}">
                                             @error('no_rekam')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

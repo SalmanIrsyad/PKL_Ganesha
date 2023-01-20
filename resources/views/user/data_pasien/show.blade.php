@@ -187,12 +187,12 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-grid gap-2">
-                                <a href="/home" class="btn btn-primary" type="submit">Kembali</a>
-                                <a href="/pasien-edit/{{ auth()->user()->id  }}" class="btn btn-primary" type="submit">Edit</a>
+                                <div class="mb-3">
+                                    <div class="d-grid gap-2 d-md-block">
+                                        <a href="/pasien-edit/{{ auth()->user()->id  }}" class="btn btn-primary" type="submit">Edit</a>
+                                        <a href="/home" class="btn btn-primary " type="submit">Kembali</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

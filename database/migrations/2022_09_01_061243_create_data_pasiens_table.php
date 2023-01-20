@@ -18,7 +18,7 @@ class CreateDataPasiensTable extends Migration
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->date('tgl')->nullable();
-            $table->integer('no_rekam')->unique();
+            $table->string('no_rekam')->unique();
             $table->string('nama')->nullable();
             $table->string('tmp_lahir')->nullable();
             $table->date('tgl_lahir')->nullable();

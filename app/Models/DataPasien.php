@@ -54,4 +54,24 @@ class DataPasien extends Model
     {
        return $this->belongsTo(User::class,'id_user');
     }
+
+    public static function kode()
+    {
+    	$kode = DB::table('datapasiens')->select('kode');
+    	$addNol = '';
+    	$kode = str_replace("DP", "", $kode);
+    	$kode = (int) $kode + 1;
+        $incrementKode = $kode;
+
+    	if (strlen($kode) == 1) {
+    		$addNol = "000";
+    	} elseif (strlen($kode) == 2) {
+    		$addNol = "00";
+    	} elseif (strlen($kode == 3)) {
+    		$addNol = "0";
+    	}
+
+    	$kodeBaru = $addNol.$incrementKode;
+    	return $kodeBaru;
+    }
 }
